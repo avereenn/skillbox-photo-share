@@ -1,0 +1,42 @@
+{
+  "name": "skillbox-photo-share",
+  "version": "1.0.0",
+  "description": "photo sharing app graduation project",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeenJah/skillbox-photo-share.git"
+  },
+  "keywords": [
+    "skillbox",
+    "graduation",
+    "react",
+    "redux"
+  ],
+  "author": "Igor Averin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NeenJah/skillbox-photo-share/issues"
+  },
+  "homepage": "https://github.com/NeenJah/skillbox-photo-share#readme",
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-react": "^7.13.13",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2"
+  }
+}
