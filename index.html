@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>photo-share-app</title>
+<style>
+  :root {
+    --main-color: #fadadd;
+    --light-color: #fff;
+    --dark-color: #e6e6fa;
+    --main-font-color: #333;
+  }
+  
+  body {
+   margin: 0;
+   min-width: 320px;
+   color: var(--main-font-color);
+   background-color: #efe7db;
+  }
+  
+  .container {
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .header .container {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  
+  .header__title {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .footer {
+    padding-top: 24px;
+    padding-bottom: 42px;
+    background-color: var(--dark-color);
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="header__title">Photo share App</h1>
+    </div>
+  </header>
+  <main class="main container">
+    <div class="js-app"></div>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <span class="footer__author-info">&copy; Игорь Аверин 2022 г.</span>
+    </div>
+  </footer>
+</body>
+</html>
