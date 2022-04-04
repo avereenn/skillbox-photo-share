@@ -28,6 +28,7 @@
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
     "babel-loader": "^8.2.2",
+    "babel-polyfill": "^6.26.0",
     "css-loader": "^5.2.6",
     "style-loader": "^3.2.1",
     "webpack": "^5.70.0",
