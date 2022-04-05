@@ -3,10 +3,10 @@ import Article from './article.js';
 
 export default function Feed({ posts, onImageClick }) {
   const articles = posts.map(post => {
-    return (<li id={post.id} className="app__feed-item js-feed-item">
+    return (<li key={post.id} id={post.id} className="app__feed-item js-feed-item">
       <Article
         imgSrc={post.urls.thumb}
-        imgAlt={post.description}
+        imgDesc={post.description}
         authorName={post.user.name}
         authorLink={post.user.links.html}
         date={post.created_at}

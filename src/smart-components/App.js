@@ -13,16 +13,16 @@ class App extends React.Component {
   onOpenModalImgClick(ev) {
     ev.target.style.transform = `scale(1.5)`;
   }
-  
+
   onLikeArticleBtnClick(ev) {
     const articleId = ev.target.closest(`js-feed-item`).id;
-    
+
     likeArticle(articleId);
   }
 
   render() {
     const { feed } = this.props;
-    console.log(this.props);
+
     return (
       <div className="app__container">
         <Feed posts={feed} onImgClick={this.onOpenModalImgClick}/>
@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return: {
+  return {
     likeArticle: articleId => dispatch(likeArticle(articleId)),
   };
 }
