@@ -3,7 +3,7 @@ import Article from './article.js';
 
 export default function Feed({ posts, onImageClick }) {
   const articles = posts.map(post => {
-    return (<li id={post.id} className="app__article">
+    return (<li id={post.id} className="app__feed-item js-feed-item">
       <Article
         imgSrc={post.urls.thumb}
         imgAlt={post.description}
