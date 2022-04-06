@@ -1,7 +1,8 @@
-export default function reduceFeed(state = [], action) {
+export default function reduceFeed(state = { feed: [], modalVisible: false }, action) {
+  let { feed, modalVisible } = state;
   switch(action.type) {
-    case `feed/like`:
-      return state.map(article => {
+    case `feed/toggleLike`:
+      feed = feed.map(article => {
         if(article.id === action.payload) {
           if(article.liked_by_user) {
             article.liked_by_user = false;
@@ -12,6 +13,14 @@ export default function reduceFeed(state = [], action) {
           }
         }
       });
+      
+      return { feed, modalVisible };
+      break;
+      
+    case `feed/toggleModalVisible`:
+      modalVisible = !modalVisible;
+      
+      return { feed, modalVisible };
     default: return state;
   }
 }

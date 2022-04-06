@@ -1,8 +1,9 @@
 import React from 'react';
+import { INITIAL_IMG_DESC } from '../constants.js';
 
 export default function Article({
   imgSrc,
-  imgDesc = `image from unsplash.com`,
+  imgDesc,
   authorName,
   authorLink,
   date,
@@ -10,6 +11,14 @@ export default function Article({
   onImgClick
 }) {
 const postDateTime = new Date(date).toLocaleString(`ru`);
+
+// проверяем наличие описания изображения
+if(imgDesc !== null && typeof imgDesc !== `undefined`) {
+  imgDesc = imgDesc.trim();
+}
+
+// описания нет - заменяем строкой по умолчанию
+if(!imgDesc) imgDesc = INITIAL_IMG_DESC;
 
   return (
   <article className="app__article article">

@@ -2,10 +2,13 @@ import { createStore } from 'redux';
 import reduceFeed from './reducers/reduceFeed.js';
 import unsplashApi from './unsplash.js';
 
-let initialState = [];
+let initialState = {
+  feed: [],
+  modalVisible: false,
+};
 
 export default async function getFeedStore() {
   const result = await unsplashApi.photos.list();
-  initialState = result.response.results;
+  initialState.feed = result.response.results;
   return createStore(reduceFeed, initialState);
 }

@@ -1,8 +1,9 @@
 import React from 'react';
 import Feed from '../components/feed.js';
+import Modal from '../components/modal.js';
 import { connect } from 'react-redux';
-import { likeArticle } from '../actions/index.js';
-
+import { toggleLikeArticle, toggleModalVisible } from '../actions/index.js';
+/*
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -15,9 +16,9 @@ class App extends React.Component {
   }
 
   onLikeArticleBtnClick(ev) {
-    const articleId = ev.target.closest(`js-feed-item`).id;
+    const articleId = ev.target.closest(`.js-feed-item`).id;
 
-    likeArticle(articleId);
+    toggleLikeArticle(articleId);
   }
 
   render() {
@@ -30,13 +31,39 @@ class App extends React.Component {
     );
   }
 }
+*/
+function onOpenModalImgClick() {
+  toggleModalVisible();
+}
+
+function onToggleLikeArticleBtnClick(ev) {
+  const articleId = ev.target.closest(`.js-feed-item`).id;
+  toggleLikeArticle(articleId);
+}
+
+function App(props) {
+  const { feed, modalVisible } = props;
+  return (
+    <div className="app__container">
+    <Feed
+      posts={feed}
+      onImgClick={onOpenModalImgClick}
+    />
+    <Modal visible={modalVisible} onToggleLike={onToggleLikeArticleBtnClick} />
+    </div>
+  );
+}
 
 function mapStateToProps(state) {
-  return { feed: state };
+  return {
+    feed: state.feed,
+    modalVisible: state.modalVisible,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    toggleModalVisible: () => dispatch(toggleModalVisible()),
     likeArticle: articleId => dispatch(likeArticle(articleId)),
   };
 }

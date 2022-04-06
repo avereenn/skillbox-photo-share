@@ -1,6 +1,6 @@
-export function likeArticle(articleId) {
+export function toggleLikeArticle(articleId) {
   return {
-    type: `feed/like`,
+    type: `feed/toggleLike`,
     payload: articleId,
   };
 }
