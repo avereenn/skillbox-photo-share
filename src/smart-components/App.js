@@ -1,8 +1,7 @@
 import React from 'react';
 import Feed from '../components/feed.js';
-import Modal from '../components/modal.js';
 import { connect } from 'react-redux';
-import { toggleLikeArticle, toggleModalVisible } from '../actions/index.js';
+import { toggleLikeArticle } from '../actions/index.js';
 /*
 class App extends React.Component {
   constructor(props) {
@@ -32,9 +31,6 @@ class App extends React.Component {
   }
 }
 */
-function onOpenModalImgClick() {
-  toggleModalVisible();
-}
 
 function onToggleLikeArticleBtnClick(ev) {
   const articleId = ev.target.closest(`.js-feed-item`).id;
@@ -46,10 +42,9 @@ function App(props) {
   return (
     <div className="app__container">
     <Feed
-      posts={feed}
+      articles={feed}
       onImgClick={onOpenModalImgClick}
     />
-    <Modal visible={modalVisible} onToggleLike={onToggleLikeArticleBtnClick} />
     </div>
   );
 }
@@ -57,13 +52,11 @@ function App(props) {
 function mapStateToProps(state) {
   return {
     feed: state.feed,
-    modalVisible: state.modalVisible,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleModalVisible: () => dispatch(toggleModalVisible()),
     likeArticle: articleId => dispatch(likeArticle(articleId)),
   };
 }

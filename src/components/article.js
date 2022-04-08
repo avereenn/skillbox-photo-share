@@ -1,32 +1,29 @@
 import React from 'react';
-import { INITIAL_IMG_DESC } from '../constants.js';
+import { Link } from 'react-router-dom';
+import { getValidArticleInfo } from '../utils.js';
 
-export default function Article({
-  imgSrc,
-  imgDesc,
-  authorName,
-  authorLink,
-  date,
-  likesAmount,
-  onImgClick
-}) {
-const postDateTime = new Date(date).toLocaleString(`ru`);
-
-// проверяем наличие описания изображения
-if(imgDesc !== null && typeof imgDesc !== `undefined`) {
-  imgDesc = imgDesc.trim();
-}
-
-// описания нет - заменяем строкой по умолчанию
-if(!imgDesc) imgDesc = INITIAL_IMG_DESC;
+export default function Article({ articleInfo }) {
+articleInfo = getValidArticleInfo(articleInfo);
+const {
+  id,
+  created_at: dateStr,
+  description,
+  likes,
+  user.username: userName,
+  user.links.html: userLink,
+  urls.thumb: src,
+} = articleInfo;
+const articleDateStr = new Date(dateStr).toLocaleString(`ru`);
 
   return (
   <article className="app__article article">
-    <h2 hidden>{imgDesc}</h2>
-    <img className="article__image" src={imgSrc} alt={imgDesc} onClick={onImgClick} />
-    <a className="article__author" href={authorLink}>{authorName}</a>
-    <time className="article__time" dateTime={date}>{postDateTime}</time>
-    <span className="article__likes">{likesAmount}</span>
+    <h2 hidden>{description}</h2>
+    <Link to={`/${id}`}>
+      <img className="article__image" src={src} alt={description} />
+    </Link>
+    <a className="article__author" href={userLink}>{userName}</a>
+    <time className="article__time" dateTime={dateStr}>{articleDateStr}</time>
+    <span className="article__likes">{likes}</span>
   </article>
   );
 }

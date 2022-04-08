@@ -1,5 +1,5 @@
-export default function reduceFeed(state = { feed: [], modalVisible: false }, action) {
-  let { feed, modalVisible } = state;
+export default function reduceFeed(state = { feed: [] }, action) {
+  let { feed } = state;
   switch(action.type) {
     case `feed/toggleLike`:
       feed = feed.map(article => {
@@ -14,13 +14,9 @@ export default function reduceFeed(state = { feed: [], modalVisible: false }, ac
         }
       });
       
-      return { feed, modalVisible };
+      return { feed };
       break;
-      
-    case `feed/toggleModalVisible`:
-      modalVisible = !modalVisible;
-      
-      return { feed, modalVisible };
+    
     default: return state;
   }
 }
