@@ -1,4 +1,5 @@
-import { INITIAL_IMG_DESC } from '../constants.js';
+import constants from './constants.js';
+const { INITIAL_IMG_DESC } = constants;
 
 export function getISOString(date) {
   const formatter = new Intl.DateTimeFormat(`ru`, {
@@ -21,20 +22,4 @@ export function getISOString(date) {
   const { year, month, day, hour, minute, second } = partsObj;
 
   return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
-}
-
-export function getValidArticleInfo(articleInfo) {
-  let { description } = articleInfo;
-  
-  // проверяем наличие описания изображения
-  if(description !== null && typeof description !== `undefined`) {
-    description = description.trim();
-  }
-  
-  // описания нет - заменяем строкой по умолчанию
-  if(!description) description = INITIAL_IMG_DESC;
-  
-  articleInfo.description = description;
-  
-  return articleInfo;
 }

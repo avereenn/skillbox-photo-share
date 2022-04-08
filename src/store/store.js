@@ -1,10 +1,9 @@
 import { createStore } from 'redux';
 import reduceFeed from './reducers/reduceFeed.js';
-import unsplashApi from './unsplash.js';
+import unsplashApi from '../unsplash.js';
 
 let initialState = {
   feed: [],
-  modalVisible: false,
 };
 
 export default async function getFeedStore() {
