@@ -1,18 +1,21 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Article from '../article.js';
 
-function SingleArticle({ feed }) {
+export default function SingleArticle(props) {
   const params = useParams();
   const articleId = params.articleId;
-  const articleInfo = feed.find(article => article.id === articleId);
+  const articles = useSelector(state => state.feed);
+  const articleInfo = articles.find(article => article.id === articleId);
 
   return (
     <div className="app__single-article">
+      <Link to={`/`}>НАЗАД</Link>
       <Article articleInfo={articleInfo} />
         <button className="single-article__like-btn" type="button">
-          <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+          <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
             <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501
             5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11
             14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281
@@ -22,13 +25,3 @@ function SingleArticle({ feed }) {
     </div>
   );
 }
-
-function mapStateToProps(state) {
-  return {
-    feed: state.feed,
-  };
-}
-
-SingleArticle = connect(mapStateToProps, {})(SingleArticle);
-
-export default SingleArticle;

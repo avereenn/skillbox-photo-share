@@ -1,21 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from './smart-components/App.js';
-import SingleArticle from './components/routes/singleArticle.js';
+import { Provider } from 'react-redux';
+import App from './components/smart/App.js';
 import getFeedStore from './store/store.js';
 
 const rootEl = document.querySelector(`.js-root`);
 
 getFeedStore().then(store => {
   ReactDOM.render(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App store={store} />} />
-        <Route path="/:articleId" element={<SingleArticle store={store} />} />
-      </Routes>
-    </BrowserRouter>,
+    <Provider store={store}>
+      <App />
+    </Provider>,
     rootEl
-    );
-});
-
+  );
+}).catch(err => console.log(`Ошибка приложения: ${err}`));
