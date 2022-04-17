@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Article from './article.js';
 
-export default function Feed(props) {
+export default function Feed() {
   const articles = useSelector(state => state.feed);
   const articleItems = articles.map(article => {
     return (<li key={article.id} id={article.id} className="app__feed-item js-feed-item">

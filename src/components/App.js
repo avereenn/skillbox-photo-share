@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Feed from '../feed.js';
-import SingleArticle from '../routes/singleArticle.js';
+import Feed from './feed.js';
+import Article from './article.js';
 
-export default function App(props) {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Feed />} />
-        <Route path="/:articleId" element={<SingleArticle />} />
+        <Route path="/:articleId" element={<Article isSinglePage={true} />} />
       </Routes>
     </BrowserRouter>
   );
