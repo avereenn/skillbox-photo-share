@@ -1,20 +1,27 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import unsplashApi from '../unsplash';
+import { useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import constants from '../constants.js';
 
 export default function Auth() {
-  const params = useParams();
-  const authCode = params.code;
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const authCode = searchParams.has(`code`) ? searchParams.get(`code`) : null;
 
-  if(!!code) {
-    unsplashApi.auth.userAutentication(authCode)
-      .then(res => res.json())
-      .then(json => {
-        unsplashApi.auth.setBearerToken(json.access_token);
-      });
+  if (!authCode) {
+    const { unsplashApi: { OAUTH_URL, POST_PARAMS: { client_id, redirect_uri, response_type, scope } } } = constants;
+    const redirectParams = `client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=${response_type}&scope=${scope}`;
+
+    window.location = `${OAUTH_URL}?${redirectParams}`;
+
+    return (
+      <div>Redirecting...</div>
+    );
   }
 
   return (
-    <div>Autentication...</div>
+    <div>
+      Autentication completed!
+      <Link to="/feed">Go!</Link>
+    </div>
   );
 }

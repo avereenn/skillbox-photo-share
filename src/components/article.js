@@ -10,7 +10,7 @@ function onTestLikeBtnClick() {
 }
 
 function BackLink() {
-  return <Link to={`/`}>НАЗАД</Link>;
+  return <Link to={`/feed`}>НАЗАД</Link>;
 }
 
 export default function Article({ articleInfo, isSinglePage = false }) {
