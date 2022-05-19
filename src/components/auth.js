@@ -1,11 +1,12 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import constants from '../constants.js';
 
 export default function Auth() {
   const [ searchParams, setSearchParams ] = useSearchParams();
   const authCode = searchParams.has(`code`) ? searchParams.get(`code`) : null;
+  const dispatch = useDispatch();
 
   if (!authCode) {
     const { unsplashApi: { OAUTH_URL, POST_PARAMS: { client_id, redirect_uri, response_type, scope } } } = constants;
@@ -17,6 +18,16 @@ export default function Auth() {
       <div>Redirecting...</div>
     );
   }
+  
+  dispatch({
+    type: `auth/setAuthorized`,
+    payload: true
+  });
+  
+  dispatch({
+    type: `auth/setBearerToken`,
+    payload: authCode
+  });
 
   return <Navigate to="/feed" replace />;
 }

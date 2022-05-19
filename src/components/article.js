@@ -18,6 +18,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
     const params = useParams();
     const articleId = params.articleId;
     const articles = useSelector(state => state.feed);
+    const { isAuthorized, bearerToken } = useSelector(state => state.auth);
     articleInfo = articles.find(article => article.id === articleId);
   }
 
@@ -38,6 +39,9 @@ export default function Article({ articleInfo, isSinglePage = false }) {
     const method = liked_by_user ? `DELETE` : `POST`;
     const response = await fetch(`https://unsplash.com/photos/${id}/like`, {
       method,
+      headers: {
+        [`Authorized`]: bearerToken
+      }
     });
 
     dispatch({ type: `feed/toggleLikePhoto`, response, payload: id });
@@ -53,7 +57,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
         <a className="article__author" href={html}>{username}</a>
         <div className="article__like">
           <span className="article__likes">{likes}</span>
-          {isSinglePage ? <LikeButton onBtnClick={onTestLikeBtnClick} /> : null}
+          {isSinglePage ? <LikeButton onBtnClick={onToggleLikeBtnClick} /> : null}
         </div>
       </div>
     </article>
