@@ -3,14 +3,18 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './components/App.js';
 import getFeedStore from './store/store.js';
+import authorization from './authorization.js';
 
 const rootEl = document.querySelector(`.js-root`);
 
-getFeedStore().then(store => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    rootEl
-  );
-}).catch(err => console.log(`Ошибка приложения: ${err}`));
+authorization().then(accessToken => {
+  getFeedStore(accessToken).then(store => {
+    ReactDOM.render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      rootEl
+    );
+  })
+})
+.catch(err => console.log(`Ошибка приложения: ${err}`));

@@ -1,5 +1,4 @@
 import constants from './constants.js';
-const { INITIAL_IMG_DESC } = constants;
 
 export function getISOString(date) {
   const formatter = new Intl.DateTimeFormat(`ru`, {
@@ -22,4 +21,19 @@ export function getISOString(date) {
   const { year, month, day, hour, minute, second } = partsObj;
 
   return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+}
+
+export class LocalStorageApi {
+  constructor(key, value) {
+    this.key = key;
+    if(!localStorage.getItem(this.key)) this.set(value);
+  }
+
+  get() {
+    return JSON.parse(localStorage.getItem(this.key));
+  }
+
+  set(value) {
+    localStorage.setItem(this.key, JSON.stringify(value));
+  }
 }

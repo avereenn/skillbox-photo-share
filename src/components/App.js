@@ -8,8 +8,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<Auth />} />
-        <Route path="/feed" element={<Feed />} />
+        {/* <Route path="/*" element={<Auth />} /> */}
+        <Route path="/*" element={<Feed />} />
         <Route path=":articleId" element={<Article isSinglePage={true} />} />
       </Routes>
     </BrowserRouter>

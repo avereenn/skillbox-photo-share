@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Image from './image.js';
 import LikeButton from './likeBtn.js';
+import constants from '../constants.js';
 
 // function onTestLikeBtnClick() {
 //   alert(`Like!`);
@@ -14,11 +15,11 @@ function BackLink() {
 }
 
 export default function Article({ articleInfo, isSinglePage = false }) {
-  if(isSinglePage) {
+
+  if (isSinglePage) {
     const params = useParams();
     const articleId = params.articleId;
     const articles = useSelector(state => state.feed);
-    const { isAuthorized, bearerToken } = useSelector(state => state.auth);
     articleInfo = articles.find(article => article.id === articleId);
   }
 
@@ -34,17 +35,24 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   } = articleInfo;
   const articleDateStr = new Date(dateStr).toLocaleString(`ru`);
   const dispatch = useDispatch();
+  const { bearerToken } = useSelector(state => state.auth);
 
   async function onToggleLikeBtnClick() {
+    const { API_URL, POST_PARAMS: { client_id: clientId } } = constants.unsplashApi.POST_PARAMS;
     const method = liked_by_user ? `DELETE` : `POST`;
-    const response = await fetch(`https://unsplash.com/photos/${id}/like`, {
-      method,
-      headers: {
-        [`Authorized`]: bearerToken
-      }
-    });
+    if (confirm(`всё верно? ${clientId} ${bearerToken}`)) {
+      const response = await fetch(`${API_URL}/photos/${id}/like`, {
+        method,
+        mode: `cors`,
+        headers: {
+          [`Authorization`]: `Bearer ${bearerToken}`,
+        }
+      });
 
-    dispatch({ type: `feed/toggleLikePhoto`, response, payload: id });
+      dispatch({ type: `feed/toggleLikePhoto`, response, payload: id });
+    }
+
+    alert(`не получилось поставить лайк`);
   }
 
   return (
@@ -57,7 +65,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
         <a className="article__author" href={html}>{username}</a>
         <div className="article__like">
           <span className="article__likes">{likes}</span>
-          {isSinglePage ? <LikeButton onBtnClick={onToggleLikeBtnClick} /> : null}
+          {isSinglePage ? <LikeButton isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} /> : null}
         </div>
       </div>
     </article>
