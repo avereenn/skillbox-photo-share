@@ -3,10 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import constants from '../constants.js';
 import unsplashApi from '../unsplash.js';
 
+// функция получения хранилища Redux
 export default async function getFeedStore(accessToken) {
+  // получаем список постов из API, устанавливаем его как состояние по умолчанию
   const result = await unsplashApi.photos.list();
   const initialState = result.response.results || [];
-
+  
+  // слайс для ленты
   const feedSlice = createSlice({
     name: `feed`,
     initialState,
@@ -17,7 +20,8 @@ export default async function getFeedStore(accessToken) {
       }
     },
   });
-
+  
+  // слайс для авторизации
   const authSlice = createSlice({
     name: `auth`,
     initialState: accessToken,
@@ -28,7 +32,8 @@ export default async function getFeedStore(accessToken) {
       },
     },
   });
-
+  
+  // возвращаем хранилище
   return configureStore({
     reducer: {
       feed: feedSlice.reducer,

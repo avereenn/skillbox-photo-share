@@ -7,7 +7,9 @@ import authorization from './authorization.js';
 
 const rootEl = document.querySelector(`.js-root`);
 
+// авторизация пользователя
 authorization().then(accessToken => {
+  // получаем хранилище, передавая ему токен авторизации
   getFeedStore(accessToken).then(store => {
     ReactDOM.render(
       <Provider store={store}>

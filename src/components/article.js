@@ -6,23 +6,24 @@ import Image from './image.js';
 import LikeButton from './likeBtn.js';
 import constants from '../constants.js';
 
-// function onTestLikeBtnClick() {
-//   alert(`Like!`);
-// }
-
+// компонент ссылки возврата в ленту
 function BackLink() {
-  return <Link to={`/feed`}>НАЗАД</Link>;
+  return <Link to={`/`}>НАЗАД</Link>;
 }
 
+/* компонент поста с пропсом isSinglePage. Пропс отвечаем за условный рендеринг компонента
+ * как поста и как отдельной страницы поста
+ */
 export default function Article({ articleInfo, isSinglePage = false }) {
-
+  // если компонент является отдельной страницей поста получаем id поста из location, получаем этот пост
   if (isSinglePage) {
     const params = useParams();
     const articleId = params.articleId;
     const articles = useSelector(state => state.feed);
     articleInfo = articles.find(article => article.id === articleId);
   }
-
+  
+  // получаем нужную информацию поста
   const {
     id,
     created_at: dateStr,
@@ -35,24 +36,24 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   } = articleInfo;
   const articleDateStr = new Date(dateStr).toLocaleString(`ru`);
   const dispatch = useDispatch();
-  const { bearerToken } = useSelector(state => state.auth);
-
+  
+  // получаем токен авторизации из хранилища
+  const bearerToken = useSelector(state => state.auth);
+  
+  // обработчик кнопки лайка
   async function onToggleLikeBtnClick() {
-    const { API_URL, POST_PARAMS: { client_id: clientId } } = constants.unsplashApi.POST_PARAMS;
+    const { API_URL, POST_PARAMS: { client_id: clientId } } = constants.unsplashApi;
+    // проверяем поставил ли пользователь лайк и отправляем запрос на изменение лайка
     const method = liked_by_user ? `DELETE` : `POST`;
-    if (confirm(`всё верно? ${clientId} ${bearerToken}`)) {
       const response = await fetch(`${API_URL}/photos/${id}/like`, {
         method,
-        mode: `cors`,
         headers: {
           [`Authorization`]: `Bearer ${bearerToken}`,
         }
       });
-
+      
+    // сохраняем новое состояние поста
       dispatch({ type: `feed/toggleLikePhoto`, response, payload: id });
-    }
-
-    alert(`не получилось поставить лайк`);
   }
 
   return (
