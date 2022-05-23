@@ -9,6 +9,14 @@ async function getAuthToken(code) {
 
   // делаем запрос на сервер
   const { OAUTH_URL, SECRET, POST_PARAMS: { client_id, redirect_uri } } = constants.unsplashApi;
+  console.dir({
+    method: `POST`,
+    client_id,
+    client_secret: SECRET,
+    redirect_uri,
+    code,
+    grant_type: `authorization_code`
+  });
   const authResponse = await fetch(OAUTH_URL, {
     method: `POST`,
     client_id,
@@ -17,10 +25,10 @@ async function getAuthToken(code) {
     code,
     grant_type: `authorization_code`
   });
-  
+
   // API присылает JSON объект, получаем из него токен авторизации
   const { access_token } = authResponse;
-  
+
   localStorage.setItem(constants.LOCAL_STORAGE_KEY, access_token);
 
   return access_token;
@@ -31,7 +39,7 @@ export default async function authorization() {
   // получаем код для авторизации из параметров
   const authCode = window.location.search.split(`?code=`)[1];
   let accessToken;
-  
+
   // если код есть получаем токен
   if (authCode) {
     accessToken = await getAuthToken(authCode);
