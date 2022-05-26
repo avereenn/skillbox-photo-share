@@ -1,3 +1,4 @@
+import { createDispatchHook } from 'react-redux';
 import constants from './constants.js';
 
 // функциия для получения токена авторизации на основании кода, присланного API
@@ -5,26 +6,23 @@ async function getAuthToken(code) {
   // если код сохранён в localStorage возвращаем его
   const localToken = localStorage.getItem(constants.LOCAL_STORAGE_KEY);
 
-  if(localToken) return localToken;
+  if (localToken && localToken !== `undefined`) return localToken;
 
   // делаем запрос на сервер
-  const { OAUTH_URL, SECRET, POST_PARAMS: { client_id, redirect_uri } } = constants.unsplashApi;
-  console.dir({
-    method: `POST`,
-    client_id,
-    client_secret: SECRET,
-    redirect_uri,
-    code,
-    grant_type: `authorization_code`
-  });
-  const authResponse = await fetch(OAUTH_URL, {
-    method: `POST`,
-    client_id,
-    client_secret: SECRET,
-    redirect_uri,
-    code,
-    grant_type: `authorization_code`
-  });
+  const { TOKEN_URL, SECRET, POST_PARAMS: { client_id, redirect_uri, grant_type } } = constants.unsplashApi;
+  let authResponse;
+  try {
+    authResponse = await fetch(TOKEN_URL, {
+      method: `POST`,
+      client_id,
+      client_secret: SECRET,
+      redirect_uri: encodeURIComponent(redirect_uri),
+      code,
+      grant_type
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 
   // API присылает JSON объект, получаем из него токен авторизации
   const { access_token } = authResponse;

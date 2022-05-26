@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toggleLikePhoto } from '../store/store.js';
 import Image from './image.js';
 import LikeButton from './likeBtn.js';
 import constants from '../constants.js';
@@ -16,13 +17,15 @@ function BackLink() {
  */
 export default function Article({ articleInfo, isSinglePage = false }) {
   // если компонент является отдельной страницей поста получаем id поста из location, получаем этот пост
+  const params = useParams();
+  const articleId = params.articleId;
+  const articles = useSelector(state => state.feed);
+  const dispatch = useDispatch();
+
   if (isSinglePage) {
-    const params = useParams();
-    const articleId = params.articleId;
-    const articles = useSelector(state => state.feed);
     articleInfo = articles.find(article => article.id === articleId);
   }
-  
+
   // получаем нужную информацию поста
   const {
     id,
@@ -35,11 +38,10 @@ export default function Article({ articleInfo, isSinglePage = false }) {
     urls,
   } = articleInfo;
   const articleDateStr = new Date(dateStr).toLocaleString(`ru`);
-  const dispatch = useDispatch();
-  
+
   // получаем токен авторизации из хранилища
   const bearerToken = useSelector(state => state.auth);
-  
+
   // обработчик кнопки лайка
   async function onToggleLikeBtnClick() {
     const { API_URL, POST_PARAMS: { client_id: clientId } } = constants.unsplashApi;
@@ -51,9 +53,9 @@ export default function Article({ articleInfo, isSinglePage = false }) {
           [`Authorization`]: `Bearer ${bearerToken}`,
         }
       });
-      
+
     // сохраняем новое состояние поста
-      dispatch({ type: `feed/toggleLikePhoto`, response, payload: id });
+      dispatch(toggleLikePhoto(id));
   }
 
   return (
