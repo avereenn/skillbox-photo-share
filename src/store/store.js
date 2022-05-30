@@ -54,10 +54,12 @@ export const fetchAccessToken = createAsyncThunk(
     try {
       const localToken = localStorage.getItem(constants.LOCAL_STORAGE_KEY);
 
-      if (!/null|undefined/.test(localToken)) {
+      if (!/null|undefined|^\s*$/.test(localToken)) {
         dispatch(setAccessToken(localToken));
         return localToken;
       }
+      
+      localStorage.removeItem(constants.LOCAL_STORAGE_KEY);
 
       const authCode = window.location.search.split(`code=`)[1];
 
