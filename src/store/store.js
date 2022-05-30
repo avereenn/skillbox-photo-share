@@ -48,7 +48,7 @@ export const toggleLike = createAsyncThunk(
   });
 
 // авторизация пользователя
-export const getAccessToken = createAsyncThunk(
+export const fetchAccessToken = createAsyncThunk(
   `feed/getAccessToken`,
   async function (payload, { rejectWithValue, dispatch }) {
     try {
@@ -83,10 +83,19 @@ export const getAccessToken = createAsyncThunk(
   }
 );
 
+function setError(state, { payload }) {
+      state.status = `rejected`;
+      state.error = payload;
+    }
+
 // слайс для ленты
 const feedSlice = createSlice({
   name: `feed`,
-  initialState: [],
+  initialState: {
+    feed: [],
+    status: null,
+    error: null,
+  },
   reducers: {
     initFeed(state, { payload }) {
       return payload;
@@ -99,19 +108,46 @@ const feedSlice = createSlice({
       state.splice(targetPhotoIndex, 1, payload);
     }
   },
+  extraReducers: {
+    [fetchPhotos.pending]: (state) => {
+      state.status = `loading`;
+      state.error = null;
+    },
+    [fetchPhotos.fulfilled]: (state, { payload }) => {
+      state.status = `resolved`;
+      state.feed = payload;
+    },
+    [fetchPhotos.rejected]: setError,
+    [toggleLike.rejected]: setError,
+  },
 });
 
 // слайс для авторизации
 const authSlice = createSlice({
   name: `auth`,
-  initialState: ``,
+  initialState: {
+    token: null,
+    status: null,
+    error: null,
+  },
   reducers: {
     setAccessToken(state, { payload }) {
       unsplashApi.auth.setBearerToken(payload);
       localStorage.setItem(constants.LOCAL_STORAGE_KEY, payload);
-      return payload;
+      state.token = payload;
     },
   },
+  extraReducers: {
+    [fetchAccessToken.pending]: (state) => {
+    state.status = `loading`;
+    state.error = null;
+    },
+    [fetchAccessToken.fulfilled]: (state, { payload }) => {
+    state.status = `resolved`;
+    state.feed = payload;
+    },
+    [fetchAccessToken.rejected]: setError,
+  }
 });
 
 // экспортируем хранилище

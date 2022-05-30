@@ -9,9 +9,11 @@ export default function App() {
   const feedState = useSelector(state => state.feed);
   const authState = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const status = feedState.status || authState.status || null;
+  const error = feedState.error || authState.error || null;
 
   useEffect(() => {
-    dispatch(getAccessToken());
+    dispatch(fetchAccessToken());
   }, [authState]);
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/*" element={<Feed articles={feedState} />} />
+      <Route path="/*" element={<Feed status={status} error={error} articles={feedState.feed} />} />
       <Route path=":articleId" element={<Article isSinglePage={true} />} />
     </Routes>
   );
