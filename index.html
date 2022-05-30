@@ -6,6 +6,21 @@
 <title>photo-share-app</title>
 <link rel="shortcut icon" href="img/favicon.png" type="image/png">
 <style>
+  @keyframes rotation {
+    0% {
+      stroke-dasharray: 450 50;
+      transform: rotate(0);
+    }
+    80% {
+      stroke-dasharray: 10 10;
+      transform: rotate(288deg);
+    }
+    100% {
+      stroke-dasharray: 450 50;
+      transform: rotate(360deg);
+    }
+  }
+
   :root {
     --main-color: #fadadd;
     --light-color: #fff;
@@ -48,8 +63,22 @@
     max-width: 1024px;
   }
 
+  .single-article__like-btn {
+    cursor: pointer;
+  }
+
   .single-article__like-btn_like {
     border-color: red;
+  }
+
+  /* PRELOADER */
+  .preloader__circle {
+    stroke: var(--dark-color);
+    transform-origin: center;
+    animation-name: rotation;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
   }
 </style>
 <script src="build/index.js" defer></script>

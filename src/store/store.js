@@ -7,7 +7,7 @@ import unsplashApi from '../unsplash.js';
 // запрос первых фото для ленты
 export const fetchPhotos = createAsyncThunk(
   `feed/fetchPhotos`,
-  async function (payload, { rejectWithValue, dispatch }) {
+  async function (payload, { rejectWithValue }) {
     try {
       const response = await unsplashApi.photos.listPhotos();
 
@@ -16,8 +16,6 @@ export const fetchPhotos = createAsyncThunk(
       }
 
       const photoList = await toJson(response);
-
-      dispatch(initFeed(photoList));
 
       return photoList;
     } catch (error) {
@@ -29,36 +27,38 @@ export const fetchPhotos = createAsyncThunk(
 // запрос на изменение состояния лайка фото
 export const toggleLike = createAsyncThunk(
   `feed/toggleLike`,
-  async function (id, { rejectWithValue, dispatch }) {
+  async function (id, { rejectWithValue, dispatch, getState }) {
     try {
-      const response = await unsplashApi.photos.likePhoto(id);
+      const currentPhoto = getState().feed.feed.find(photo => photo.id === id);
+      const { liked_by_user: isLiked } = currentPhoto;
+      const response = isLiked ? await unsplashApi.photos.unlikePhoto(id) : await unsplashApi.photos.likePhoto(id);
 
       if (!response.ok) {
         throw new Error(`Ошибка: ${response.status}. ${response.text}`);
       }
 
-      const targetPhoto = await toJson(response);
+      // const responseInfo = await toJson(response);
+      // const { photo: targetPhoto } = responseInfo;
 
-      dispatch(toggleLikePhoto(targetPhoto));
-
-      return targetPhoto;
+      dispatch(toggleLikePhoto(id));
     } catch (error) {
+      alert(error.message);
       rejectWithValue(error.message);
     }
   });
 
 // авторизация пользователя
 export const fetchAccessToken = createAsyncThunk(
-  `feed/getAccessToken`,
-  async function (payload, { rejectWithValue, dispatch }) {
+  `feed/fetchAccessToken`,
+  async function (payload, { rejectWithValue }) {
     try {
       const localToken = localStorage.getItem(constants.LOCAL_STORAGE_KEY);
 
       if (!/null|undefined|^\s*$/.test(localToken)) {
-        dispatch(setAccessToken(localToken));
+        unsplashApi.auth.setBearerToken(localToken);
         return localToken;
       }
-      
+      // очищаем localStorage от некорректных данных
       localStorage.removeItem(constants.LOCAL_STORAGE_KEY);
 
       const authCode = window.location.search.split(`code=`)[1];
@@ -78,7 +78,8 @@ export const fetchAccessToken = createAsyncThunk(
 
       unsplashApi.auth.setBearerToken(access_token);
       localStorage.setItem(constants.LOCAL_STORAGE_KEY, access_token);
-      dispatch(setAccessToken(access_token));
+
+      return access_token;
     } catch (error) {
       rejectWithValue(error.message);
     }
@@ -105,9 +106,9 @@ const feedSlice = createSlice({
     addArticlesToFeed(state, { payload }) {
       state.push(...payload);
     },
-    toggleLikePhoto(state, { payload }) {
-      const targetPhotoIndex = state.indexOf(state.find(el => el.id === payload.id));
-      state.splice(targetPhotoIndex, 1, payload);
+    toggleLikePhoto: (state, { payload }) => {
+      const targetPhoto = feed.find(el => el.id === payload);
+      targetPhoto.liked_by_user = !targetPhoto.liked_by_user;
     }
   },
   extraReducers: {
@@ -146,7 +147,7 @@ const authSlice = createSlice({
     },
     [fetchAccessToken.fulfilled]: (state, { payload }) => {
     state.status = `resolved`;
-    state.feed = payload;
+    state.token = payload;
     },
     [fetchAccessToken.rejected]: setError,
   }

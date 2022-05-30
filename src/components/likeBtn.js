@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function LikeButton({ isLiked = false, onBtnClick }) {
-  const className = `single-article__like-btn` + (isLiked ? `single-article__like-btn_like` : ``);
+  const className = `single-article__like-btn ${isLiked ? `single-article__like-btn_like` : ``}`;
   return (
     <button className={className} type="button" onClick={onBtnClick}>
       <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">

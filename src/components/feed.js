@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Preloader, Error } from './statusComponents.js';
 import Article from './article.js';
 
@@ -14,7 +13,7 @@ export default function Feed({ articles, status, error }) {
     <React.Fragment>
       {status === `loading` && <Preloader />}
       {error && <Error error={error} />}
-      <ul className="app__feed">{articleItems}</ul>;
+      <ul className="app__feed">{articleItems}</ul>
     </React.Fragment>
   );
 }

@@ -2,10 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { toggleLikePhoto } from '../store/store.js';
+import { toggleLike } from '../store/store.js';
 import Image from './image.js';
 import LikeButton from './likeBtn.js';
-import constants from '../constants.js';
 
 // компонент ссылки возврата в ленту
 function BackLink() {
@@ -19,7 +18,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   // если компонент является отдельной страницей поста получаем id поста из location, получаем этот пост
   const params = useParams();
   const articleId = params.articleId;
-  const articles = useSelector(state => state.feed);
+  const { feed: articles } = useSelector(state => state.feed);
   const dispatch = useDispatch();
 
   if (isSinglePage) {
@@ -39,23 +38,9 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   } = articleInfo;
   const articleDateStr = new Date(dateStr).toLocaleString(`ru`);
 
-  // получаем токен авторизации из хранилища
-  const bearerToken = useSelector(state => state.auth);
-
   // обработчик кнопки лайка
-  async function onToggleLikeBtnClick() {
-    const { API_URL, POST_PARAMS: { client_id: clientId } } = constants.unsplashApi;
-    // проверяем поставил ли пользователь лайк и отправляем запрос на изменение лайка
-    const method = liked_by_user ? `DELETE` : `POST`;
-      const response = await fetch(`${API_URL}/photos/${id}/like`, {
-        method,
-        headers: {
-          [`Authorization`]: `Bearer ${bearerToken}`,
-        }
-      });
-
-    // сохраняем новое состояние поста
-      dispatch(toggleLikePhoto(id));
+  function onToggleLikeBtnClick() {
+    dispatch(toggleLike(id));
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useSearchParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPhotos, fetchAccessToken } from '../store/store.js';
 import Feed from './feed.js';
