@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPhotos, getAccessToken } from '../store/store.js';
+import { fetchPhotos, fetchAccessToken } from '../store/store.js';
 import Feed from './feed.js';
 import Article from './article.js';
 
@@ -14,7 +14,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(fetchAccessToken());
-  }, [authState]);
+  }, [authState.token]);
 
   useEffect(() => {
     dispatch(fetchPhotos());
