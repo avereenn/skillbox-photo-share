@@ -1,88 +1,159 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>photo-share-app</title>
-<link rel="shortcut icon" href="img/favicon.png" type="image/png">
-<style>
-  @keyframes rotation {
-    0% {
-      stroke-dasharray: 450 50;
-      transform: rotate(0);
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>photo-share-app</title>
+  <link rel="shortcut icon" href="img/favicon.png" type="image/png">
+  <style>
+    @keyframes rotation {
+      0% {
+        stroke-dasharray: 450 50;
+        transform: rotate(0);
+      }
+
+      80% {
+        stroke-dasharray: 10 10;
+        transform: rotate(288deg);
+      }
+
+      100% {
+        stroke-dasharray: 450 50;
+        transform: rotate(360deg);
+      }
     }
-    80% {
-      stroke-dasharray: 10 10;
-      transform: rotate(288deg);
+
+    html {
+      box-sizing: border-box;
     }
-    100% {
-      stroke-dasharray: 450 50;
-      transform: rotate(360deg);
+
+    *,
+    ::before,
+    ::after {
+      box-sizing: inherit;
     }
-  }
 
-  :root {
-    --main-color: #fadadd;
-    --light-color: #fff;
-    --dark-color: #e6e6fa;
-    --main-font-color: #333;
-  }
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-   margin: 0;
-   min-width: 320px;
-   color: var(--main-font-color);
-   background-color: #efe7db;
-  }
+    figure {
+      margin: 0;
+      padding: 0;
+    }
 
-  .container {
-    max-width: 1920px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+    img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
 
-  .header .container {
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-  .header__title {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
+    p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
 
-  .footer {
-    padding-top: 24px;
-    padding-bottom: 42px;
-    background-color: var(--dark-color);
-  }
+    ul {
+      margin-bottom: 0;
+      margin-top: 0;
+      padding-left: 0;
+      list-style: none;
+    }
 
-  .article__image {
-    max-width: 1024px;
-  }
+    picture {
+      font-size: 0;
+      line-height: 0;
+    }
 
-  .single-article__like-btn {
-    cursor: pointer;
-  }
+    :root {
+      --main-color: #fadadd;
+      --light-color: #fff;
+      --dark-color: #e6e6fa;
+      --main-font-color: #333;
+    }
 
-  .single-article__like-btn_like {
-    border-color: red;
-  }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--main-font-color);
+      background-color: #efe7db;
+    }
 
-  /* PRELOADER */
-  .preloader__circle {
-    stroke: var(--dark-color);
-    transform-origin: center;
-    animation-name: rotation;
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-</style>
-<script src="build/index.js" defer></script>
+    .container {
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .header .container {
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .header__title {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .footer {
+      padding-top: 24px;
+      padding-bottom: 42px;
+      background-color: var(--dark-color);
+    }
+
+    .app__feed {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 100%;
+      padding-left: 0;
+      margin-top: 0;
+      list-style: none;
+    }
+
+    .app__feed-item {
+      flex: 0 0 calc((100% - 30px) / 4);
+    }
+
+    .app__feed-item:not(:nth-child(4n)) {
+      margin-right: 10px;
+    }
+
+    .article__image {
+      max-width: 1024px;
+    }
+
+    .single-article__like-btn {
+      cursor: pointer;
+    }
+
+    .single-article__like-btn_like {
+      border-color: red;
+    }
+
+    /* PRELOADER */
+    .preloader__circle {
+      stroke: var(--dark-color);
+      transform-origin: center;
+      animation-name: rotation;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+  </style>
+  <script src="build/index.js" defer></script>
 </head>
+
 <body>
   <header class="header">
     <div class="container">
@@ -98,4 +169,5 @@
     </div>
   </footer>
 </body>
+
 </html>

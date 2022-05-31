@@ -37,12 +37,11 @@ export const toggleLike = createAsyncThunk(
         throw new Error(`Ошибка: ${response.status}. ${response.text}`);
       }
 
-      // const responseInfo = await toJson(response);
-      // const { photo: targetPhoto } = responseInfo;
-
-      dispatch(toggleLikePhoto(id));
+      const result = await toJson(response);
+      const { liked_by_user, likes } = result.photo;
+      dispatch(toggleLikePhoto({ id, liked_by_user, likes }));
     } catch (error) {
-      alert(error.message);
+      console.dir(error);
       rejectWithValue(error.message);
     }
   });
@@ -87,9 +86,9 @@ export const fetchAccessToken = createAsyncThunk(
 );
 
 function setError(state, { payload }) {
-      state.status = `rejected`;
-      state.error = payload;
-    }
+  state.status = `rejected`;
+  state.error = payload;
+}
 
 // слайс для ленты
 const feedSlice = createSlice({
@@ -107,8 +106,10 @@ const feedSlice = createSlice({
       state.push(...payload);
     },
     toggleLikePhoto: (state, { payload }) => {
-      const targetPhoto = feed.find(el => el.id === payload);
-      targetPhoto.liked_by_user = !targetPhoto.liked_by_user;
+      const { id, liked_by_user, likes } = payload;
+      const targetPhoto = state.feed.find(el => el.id === id);
+      targetPhoto.liked_by_user = liked_by_user;
+      targetPhoto.likes = likes;
     }
   },
   extraReducers: {
@@ -142,12 +143,12 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [fetchAccessToken.pending]: (state) => {
-    state.status = `loading`;
-    state.error = null;
+      state.status = `loading`;
+      state.error = null;
     },
     [fetchAccessToken.fulfilled]: (state, { payload }) => {
-    state.status = `resolved`;
-    state.token = payload;
+      state.status = `resolved`;
+      state.token = payload;
     },
     [fetchAccessToken.rejected]: setError,
   }
