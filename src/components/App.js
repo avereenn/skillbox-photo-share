@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchPhotos, fetchAccessToken } from '../store/store.js';
 import Feed from './feed.js';
 import Article from './article.js';
+import NotFound from './notFound.js';
 
 export default function App() {
   const feedState = useSelector(state => state.feed);
@@ -22,8 +23,9 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/*" element={<Feed status={status} error={error} articles={feedState.feed} />} />
-      <Route path=":articleId" element={<Article isSinglePage={true} />} />
+      <Route path="/" element={<Feed status={status} error={error} articles={feedState.feed} />} />
+      <Route path="/photos/:articleId" element={<Article isSinglePage={true} />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

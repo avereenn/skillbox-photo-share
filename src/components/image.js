@@ -5,7 +5,7 @@ export default function Image({ id, urls, description, isLink = true }) {
   // условный рендеринг для изображения-ссылки (в ленте) и простого изображения
   return isLink ?
     (
-      <Link to={`/${id}`}>
+      <Link to={`/photos/${id}`}>
         <img className="article__image" src={urls.thumb} alt={description} />
       </Link>
     ) :
