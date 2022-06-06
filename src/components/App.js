@@ -10,6 +10,7 @@ export default function App() {
   const feedState = useSelector(state => state.feed);
   const authState = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const { pagesNumber } = feedState;
   const status = feedState.status || authState.status || null;
   const error = feedState.error || authState.error || null;
 
@@ -19,7 +20,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(fetchPhotos());
-  }, []);
+  }, [pagesNumber]);
 
   return (
     <Routes>

@@ -3,13 +3,16 @@ import { toJson } from 'unsplash-js';
 import constants from '../constants.js';
 import unsplashApi from '../unsplash.js';
 
+const { LOCAL_STORAGE_KEY, INIT_PAGE_NUMBER } = constants;
+
 // асинхронная логика хранилища
 // запрос первых фото для ленты
 export const fetchPhotos = createAsyncThunk(
   `feed/fetchPhotos`,
-  async function (payload, { rejectWithValue }) {
+  async function (payload, { getState, rejectWithValue }) {
     try {
-      const response = await unsplashApi.photos.listPhotos();
+      const { pagesNumber } = getState().feed;
+      const response = await unsplashApi.photos.listPhotos(pagesNumber);
 
       if (!response.ok) {
         throw new Error(`Ошибка: ${response.status}. ${response.text}`);
@@ -41,7 +44,6 @@ export const toggleLike = createAsyncThunk(
       const { liked_by_user, likes } = result.photo;
       dispatch(toggleLikePhoto({ id, liked_by_user, likes }));
     } catch (error) {
-      console.dir(error);
       rejectWithValue(error.message);
     }
   });
@@ -51,14 +53,14 @@ export const fetchAccessToken = createAsyncThunk(
   `feed/fetchAccessToken`,
   async function (payload, { rejectWithValue }) {
     try {
-      const localToken = localStorage.getItem(constants.LOCAL_STORAGE_KEY);
+      const localToken = localStorage.getItem(LOCAL_STORAGE_KEY);
 
       if (!/null|undefined|^\s*$/.test(localToken)) {
         unsplashApi.auth.setBearerToken(localToken);
         return localToken;
       }
       // очищаем localStorage от некорректных данных
-      localStorage.removeItem(constants.LOCAL_STORAGE_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
 
       const authCode = window.location.search.split(`code=`)[1];
 
@@ -76,7 +78,7 @@ export const fetchAccessToken = createAsyncThunk(
       const { access_token } = authInfo;
 
       unsplashApi.auth.setBearerToken(access_token);
-      localStorage.setItem(constants.LOCAL_STORAGE_KEY, access_token);
+      localStorage.setItem(LOCAL_STORAGE_KEY, access_token);
 
       return access_token;
     } catch (error) {
@@ -95,6 +97,7 @@ const feedSlice = createSlice({
   name: `feed`,
   initialState: {
     feed: [],
+    pagesNumber: INIT_PAGE_NUMBER,
     status: null,
     error: null,
   },
@@ -102,8 +105,13 @@ const feedSlice = createSlice({
     initFeed(state, { payload }) {
       return payload;
     },
-    addArticlesToFeed(state, { payload }) {
-      state.push(...payload);
+    incPagesNumber(state) {
+      // прерываем выполнение при загрузке данных во избежание повторных запросов
+      if(state.status !== `resolved`) return;
+
+      // устанавливаем статус загрузки сразу, так как следующий вызов может начаться сразу из-за положения скролла документа
+      state.status = `loading`;
+      state.pagesNumber += 1;
     },
     toggleLikePhoto: (state, { payload }) => {
       const { id, liked_by_user, likes } = payload;
@@ -119,7 +127,7 @@ const feedSlice = createSlice({
     },
     [fetchPhotos.fulfilled]: (state, { payload }) => {
       state.status = `resolved`;
-      state.feed = payload;
+      state.feed.push(...payload);
     },
     [fetchPhotos.rejected]: setError,
     [toggleLike.rejected]: setError,
@@ -137,7 +145,7 @@ const authSlice = createSlice({
   reducers: {
     setAccessToken(state, { payload }) {
       unsplashApi.auth.setBearerToken(payload);
-      localStorage.setItem(constants.LOCAL_STORAGE_KEY, payload);
+      localStorage.setItem(LOCAL_STORAGE_KEY, payload);
       state.token = payload;
     },
   },
@@ -162,5 +170,5 @@ export default configureStore({
   }
 });
 
-export const { initFeed, addArticlesToFeed, toggleLikePhoto } = feedSlice.actions;
+export const { initFeed, addArticlesToFeed, toggleLikePhoto, incPagesNumber } = feedSlice.actions;
 export const { setAccessToken } = authSlice.actions;

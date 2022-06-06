@@ -37,3 +37,13 @@ export class LocalStorageApi {
     localStorage.setItem(this.key, JSON.stringify(value));
   }
 }
+
+// функция для получения callback url в зависимости от местоположения сервера
+export function getCallbackUrl() {
+  switch(window.location.origin) {
+    case `http://127.0.0.1:5500`:
+      return `http://127.0.0.1:5500`;
+    case `https://neenjah.github.io`:
+      return `https://neenjah.github.io/skillbox-photo-share`;
+  };
+}
