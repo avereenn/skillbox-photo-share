@@ -24,9 +24,11 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Feed status={status} error={error} articles={feedState.feed} />} />
-      <Route path="/photos/:articleId" element={<Article isSinglePage={true} />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Feed status={status} error={error} articles={feedState.feed} />} />
+        <Route path="photos/:articleId" element={<Article isSinglePage={true} />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
     </Routes>
   );
 }

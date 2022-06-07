@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>photo-share-app</title>
+<link rel="shortcut icon" href="img/favicon.png" type="image/png">
+<style>
+  :root {
+    --main-color: #fadadd;
+    --light-color: #cdad00;
+    --dark-color: #e6e6fa;
+    --main-font-color: #333;
+    --like-color: #b11f50;
+  }
+
+  body {
+   margin: 0;
+   min-width: 320px;
+   color: var(--main-font-color);
+   background-color: var(--dark-color);
+  }
+
+  .container {
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .header .container {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .header__title {
+    max-width: fit-content;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--light-color);
+  }
+  
+  .feed {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 100vh;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .feed__item {
+    flex: 0 0 calc((100% - 20px) / 2);
+    max-width: calc((100% - 20px) / 2);
+    margin-bottom: 10px;
+  }
+  
+  .article {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  
+  .article__img {
+    max-width: 100%;
+  }
+
+  .footer {
+    padding-top: 24px;
+    padding-bottom: 42px;
+    color: var(--light-color);
+  }
+  
+  .article__svg-heart {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .article__svg-heart path {
+    stroke: var(--like-color);
+    stroke-width: 8px;
+  }
+  
+  .article__svg-heart_liked path {
+    fill: var(--like-color);
+  }
+
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="header__title">Photo share App</h1>
+    </div>
+  </header>
+  <main class="main container">
+    <div class="js-root">
+      <ul class="feed">
+        <li class="feed__item">
+          <article class="feed__article article">
+            <h2 hidden>Title</h2>
+            <img class="article__img" src="img/unsplash-img.jpeg" alt="empty image elememt">
+            <div class="article__info">
+              <time class="article__time" dateTime="2022-7-7T13:49:59">07.06.2022 г.</time>
+              <a class="article__author" href="#">Профиль пользователя</a>
+              <div class="article__like">
+                <span class="article__likes">
+                  <svg class="article__svg-heart" xmlns="http://www.w3.org/2000/svg" width="175" height="175" viewBox="0 0 175 175">
+                    <path d="M 100 170 L 50 130 A 30 30 0 0 1 100 80 A 20 20 0 0 1 150 130 Z" stroke="#000" stroke-width="2" fill="none" />
+                  </svg>
+                  99
+                </span>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="feed__item">
+          <article class="feed__article article">
+            <h2 hidden>Title</h2>
+            <img class="article__img" src="img/unsplash-img-1.jpeg" alt="empty image elememt">
+            <div class="article__info">
+              <time class="article__time" dateTime="2022-7-7T13:49:59">07.06.2022 г.</time>
+              <a class="article__author" href="#">Профиль пользователя</a>
+              <div class="article__like">
+                <span class="article__likes">
+                  <svg class="article__svg-heart" xmlns="http://www.w3.org/2000/svg" width="175" height="175" viewBox="0 0 175 175">
+                    <path d="M 100 170 L 50 130 A 30 30 0 0 1 100 80 A 20 20 0 0 1 150 130 Z" stroke="#000" stroke-width="2" fill="none" />
+                  </svg>
+                  99
+                </span>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="feed__item">
+          <article class="feed__article article">
+            <h2 hidden>Title</h2>
+            <img class="article__img" src="img/unsplash-img-2.jpeg" alt="empty image elememt">
+            <div class="article__info">
+              <time class="article__time" dateTime="2022-7-7T13:49:59">07.06.2022 г.</time>
+              <a class="article__author" href="#">Профиль пользователя</a>
+              <div class="article__like">
+                <span class="article__likes">
+                  <svg class="article__svg-heart article__svg-heart_liked" xmlns="http://www.w3.org/2000/svg" width="175" height="175" viewBox="0 0 175 175">
+                    <path d="M 100 170 L 50 130 A 30 30 0 0 1 100 80 A 20 20 0 0 1 150 130 Z" stroke="#000" stroke-width="2" fill="none" />
+                  </svg>
+                  99
+                </span>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="feed__item">
+          <article class="feed__article article">
+            <h2 hidden>Title</h2>
+            <img class="article__img" src="img/unsplash-img-3.jpeg" alt="empty image elememt">
+            <div class="article__info">
+            <time class="article__time" dateTime="2022-7-7T13:49:59">07.06.2022 г.</time>
+            <a class="article__author" href="#">Профиль пользователя</a>
+              <div class="article__like">
+                <span class="article__likes">
+                  <svg class="article__svg-heart" xmlns="http://www.w3.org/2000/svg" width="175" height="175" viewBox="0 0 175 175">
+                    <path d="M 100 170 L 50 130 A 30 30 0 0 1 100 80 A 20 20 0 0 1 150 130 Z" stroke="#000" stroke-width="2" fill="none" />
+                  </svg>
+                  99
+                </span>
+              </div>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <span class="footer__author-info">&copy; Игорь Аверин 2022 г.</span>
+    </div>
+  </footer>
+</body>
+</html>
