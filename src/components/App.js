@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPhotos, fetchAccessToken } from '../store/store.js';
+import Layout from './Layout.js';
 import Feed from './feed.js';
 import Article from './article.js';
 import NotFound from './notFound.js';

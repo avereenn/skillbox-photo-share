@@ -8,7 +8,7 @@ export default function Feed({ articles, status, error }) {
   const feedRef = useRef(null);
   const dispatch = useDispatch();
   const articleItems = articles.map(article => {
-    return (<li key={article.id} id={article.id} className="app__feed-item js-feed-item">
+    return (<li key={article.id} id={article.id} className="feed__item">
       <Article articleInfo={article} />
     </li>);
   });
@@ -33,10 +33,10 @@ export default function Feed({ articles, status, error }) {
   }, []);
 
   return (
-    <React.Fragment>
-      <ul className="app__feed js-feed" ref={feedRef}>{articleItems}</ul>
+    <>
+      <ul className="feed" ref={feedRef}>{articleItems}</ul>
       {status === `loading` && <Preloader />}
       {error && <Error error={error} />}
-    </React.Fragment>
+    </>
   );
 }

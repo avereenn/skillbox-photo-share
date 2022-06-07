@@ -44,18 +44,22 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   }
 
   return (
-    <article className="app__article article">
+    <>
       {isSinglePage ? <BackLink /> : null}
-      <h2 hidden>{description}</h2>
-      <Image id={id} urls={urls} description={description} isLink={!isSinglePage} />
-      <div className="article__info">
-        <time className="article__time" dateTime={dateStr}>{articleDateStr}</time>
-        <a className="article__author" href={html}>{username}</a>
-        <div className="article__like">
-          <span className="article__likes">{likes}</span>
-          {isSinglePage ? <LikeButton isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} /> : null}
+      <article className="feed__article article">
+        <h2 hidden>{description}</h2>
+        <Image id={id} urls={urls} description={description} isLink={!isSinglePage} />
+        <div className="article__info">
+          <time className="article__time" dateTime={dateStr}>{articleDateStr}</time>
+          <a className="article__author" href={html}>{username}</a>
+          <div className="article__like">
+          <LikeButton isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} />
+            <span className="article__likes">
+              {likes}
+            </span>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </>
   );
 }

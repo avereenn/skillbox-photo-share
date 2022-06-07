@@ -76,16 +76,17 @@
 
     :root {
       --main-color: #fadadd;
-      --light-color: #fff;
+      --light-color: #cdad00;
       --dark-color: #e6e6fa;
       --main-font-color: #333;
+      --like-color: #b11f50;
     }
 
     body {
       margin: 0;
       min-width: 320px;
       color: var(--main-font-color);
-      background-color: #efe7db;
+      background-color: var(--dark-color);
     }
 
     .container {
@@ -102,48 +103,84 @@
     }
 
     .header__title {
+      max-width: fit-content;
       margin-top: 0;
       margin-bottom: 0;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--light-color);
+    }
+
+    .feed {
+      display: flex;
+      columns: 5;
+      column-gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .feed__item {
+      flex: 0 0 calc((100% - 80px) / 5);
+      margin-bottom: 10px;
+    }
+
+    .article {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+    }
+
+    .article__img {
+      max-width: 100%;
+    }
+
+    .article__info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .article__svg-heart {
+      width: 16px;
+      height: 16px;
+    }
+
+    .article__like-btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .article__svg-heart path {
+      stroke: var(--like-color);
+      stroke-width: 8px;
+    }
+
+    .article__like-btn_like .article__svg-heart path {
+      fill: var(--like-color);
     }
 
     .footer {
       padding-top: 24px;
       padding-bottom: 42px;
-      background-color: var(--dark-color);
+      color: var(--light-color);
     }
 
-    .app__feed {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 100%;
-      padding-left: 0;
-      margin-top: 0;
-      list-style: none;
-    }
-
-    .app__feed-item {
-      flex: 0 0 calc((100% - 30px) / 4);
-    }
-
-    .app__feed-item:not(:nth-child(4n)) {
-      margin-right: 10px;
-    }
-
-    .article__image {
-      max-width: 1024px;
-    }
-
-    .single-article__like-btn {
-      cursor: pointer;
-    }
-
-    .single-article__like-btn_like {
-      border-color: red;
-    }
 
     /* PRELOADER */
+    .preloader {
+      width: fit-content;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
     .preloader__circle {
-      stroke: var(--dark-color);
+      stroke: var(--light-color);
       transform-origin: center;
       animation-name: rotation;
       animation-duration: 4s;
@@ -155,7 +192,7 @@
 </head>
 
 <body>
-   <div class="js-root"></div>
+  <div class="js-root"></div>
 </body>
 
 </html>
