@@ -4,7 +4,7 @@ module.exports = {
   mode: `development`,
   entry: ['babel-polyfill', './src/index.js'],
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'public/build'),
     filename: 'index.js'
   },
   module: {

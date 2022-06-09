@@ -45,5 +45,6 @@ export function getCallbackUrl() {
       return `http://127.0.0.1:5500`;
     case `https://neenjah.github.io`:
       return `https://neenjah.github.io/skillbox-photo-share`;
+    default: return window.location.origin;
   };
 }
