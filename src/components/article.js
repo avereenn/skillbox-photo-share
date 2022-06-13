@@ -46,7 +46,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   return (
     <>
       {isSinglePage ? <BackLink /> : null}
-      <article className="feed__article article">
+      <article className={`feed__article ${isSinglePage ? `feed__article_single` : ``} article`}>
         <h2 hidden>{description}</h2>
         <Image id={id} urls={urls} description={description} isLink={!isSinglePage} />
         <div className="article__info">

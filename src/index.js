@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App.js';
 import store from './store/store.js';
+import './css/styles.css';
 
 const rootEl = document.querySelector(`.js-root`);
 
