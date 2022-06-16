@@ -2,20 +2,15 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { toggleLike } from '../store/store.js';
+import { toggleLike } from '../store/actions/feed.js';
 import Image from './image.js';
 import LikeButton from './likeBtn.js';
 
-// компонент ссылки возврата в ленту
 function BackLink() {
   return <Link to={`/`}>НАЗАД</Link>;
 }
 
-/* компонент поста с пропсом isSinglePage. Пропс отвечаем за условный рендеринг компонента
- * как поста и как отдельной страницы поста
- */
 export default function Article({ articleInfo, isSinglePage = false }) {
-  // если компонент является отдельной страницей поста получаем id поста из location, получаем этот пост
   const params = useParams();
   const articleId = params.articleId;
   const { feed: articles } = useSelector(state => state.feed);
@@ -25,7 +20,6 @@ export default function Article({ articleInfo, isSinglePage = false }) {
     articleInfo = articles.find(article => article.id === articleId);
   }
 
-  // получаем нужную информацию поста
   const {
     id,
     created_at: dateStr,
@@ -38,7 +32,6 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   } = articleInfo;
   const articleDateStr = new Date(dateStr).toLocaleString(`ru`);
 
-  // обработчик кнопки лайка
   function onToggleLikeBtnClick() {
     dispatch(toggleLike(id));
   }

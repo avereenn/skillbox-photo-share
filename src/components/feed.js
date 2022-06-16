@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { incPagesNumber } from '../store/store.js';
+import { incPagesNumber } from '../store/actions/feed.js';
 import { Preloader, Error } from './statusComponents.js';
 import Article from './article.js';
-import constants from '../constants.js';
+import { ONSCROLL_LOAD_DELAY } from '../constants.js';
 
 export default function Feed({ articles, status, error }) {
-  const { ONSCROLL_LOAD_DELAY } = constants;
   const feedRef = useRef(null);
   const dispatch = useDispatch();
   const articleItems = articles.map(article => {
@@ -15,10 +14,8 @@ export default function Feed({ articles, status, error }) {
     </li>);
   });
 
-  // состояние задержки между событиями скролла для загрузки фото
   let isDelay = false;
 
-  // обработчик события scroll для добавления элементов в ленту
   function onPushPhotosWindowScroll() {
     if (isDelay) return;
 
@@ -26,7 +23,6 @@ export default function Feed({ articles, status, error }) {
     const windowHeight = document.documentElement.clientHeight;
 
     if (elemBottomPosition <= windowHeight) {
-      // устанавливаем состояние задержки и отключаем её через время задержки
       isDelay = true;
       setTimeout(() => isDelay = false, ONSCROLL_LOAD_DELAY);
       dispatch(incPagesNumber());

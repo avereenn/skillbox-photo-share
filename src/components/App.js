@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPhotos, fetchAccessToken } from '../store/store.js';
-import Layout from './Layout.js';
+import { fetchPhotos } from '../store/actions/feed.js';
+import { fetchAccessToken } from '../store/actions/auth.js'
+import Header from './Header.js';
+import Footer from './Footer.js';
 import Feed from './feed.js';
 import Article from './article.js';
 import NotFound from './notFound.js';
@@ -24,12 +26,16 @@ export default function App() {
   }, [pagesNumber]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Feed status={status} error={error} articles={feedState.feed} />} />
-        <Route path="photos/:articleId" element={<Article isSinglePage={true} />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <>
+      <Header />
+      <main className="container">
+        <Routes>
+          <Route path="/" element={<Feed status={status} error={error} articles={feedState.feed} />} />
+          <Route path="photos/:articleId" element={<Article isSinglePage={true} />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+    </>
   );
 }
