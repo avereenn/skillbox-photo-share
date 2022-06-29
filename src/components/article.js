@@ -1,19 +1,26 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { toggleLike } from '../store/actions/feed.js';
 import Image from './image.js';
 import LikeButton from './likeBtn.js';
 
 function BackLink() {
-  return <Link to={`/`}>НАЗАД</Link>;
+  const navigate = useNavigate();
+
+  function onGoBackLinkClick(ev) {
+    ev.preventDefault();
+
+    navigate(-1);
+  }
+  return <a href="#" onClick={onGoBackLinkClick}>НАЗАД</a>;
 }
 
 export default function Article({ articleInfo, isSinglePage = false }) {
   const params = useParams();
   const articleId = params.articleId;
   const { feed: articles } = useSelector(state => state.feed);
+  const { isAuth } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   if (isSinglePage) {
@@ -46,7 +53,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
           <time className="article__time" dateTime={dateStr}>{articleDateStr}</time>
           <a className="article__author" href={html}>{username}</a>
           <div className="article__like">
-          <LikeButton isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} />
+          <LikeButton isAuth={isAuth} isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} />
             <span className="article__likes">
               {likes}
             </span>

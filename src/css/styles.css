@@ -44,7 +44,6 @@ img {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
 }
 
@@ -102,6 +101,46 @@ body {
   color: var(--light-color);
 }
 
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-page__button {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 10px;
+  background-color: transparent;
+  border: 1px solid var(--main-font-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color .16s ease-in, color .16s ease-in;
+}
+
+.login-page__button svg {
+  margin-right: 10px;
+}
+
+.login-page__button svg path {
+  transition: fill .16s ease-in;
+}
+
+.login-page__button:hover {
+  color: #fff;
+  background-color: var(--main-font-color);
+}
+
+.login-page__button:hover svg path {
+  fill: #fff;
+}
+
+.login-page__button:active {
+  background-color: var(--like-color);
+}
+
 .feed {
   display: flex;
   columns: 5;
@@ -151,6 +190,13 @@ body {
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+.article__like-tooltip {
+  padding: 10px;
+  color: #fff;
+  background-color: var(--main-font-color);
+  border-radius: 10px;
 }
 
 .article__svg-heart path {

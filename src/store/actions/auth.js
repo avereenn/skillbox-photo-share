@@ -6,27 +6,27 @@ import { setError } from '../../utils.js';
 
 export const fetchAccessToken = createAsyncThunk(
   `feed/fetchAccessToken`,
-  async function (payload, { rejectWithValue }) {
+  async function (authCode, { rejectWithValue }) {
     try {
-      const localToken = localStorage.getItem(LOCAL_STORAGE_KEY);
+      // const localToken = localStorage.getItem(LOCAL_STORAGE_KEY);
 
-      if (!/null|undefined|^\s*$/.test(localToken)) {
-        unsplashApi.auth.setBearerToken(localToken);
-        return localToken;
-      }
+      // if (!/null|undefined|^\s*$/.test(localToken)) {
+      //   unsplashApi.auth.setBearerToken(localToken);
+      //   return localToken;
+      // }
 
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      // localStorage.removeItem(LOCAL_STORAGE_KEY);
 
-      const authCode = window.location.search.split(`code=`)[1];
+      // const authCode = window.location.search.split(`code=`)[1];
 
-      if (!authCode) {
-        const authenticationUrl = unsplashApi.auth.getAuthenticationUrl([
-          `public`,
-          `write_likes`,
-        ]);
+      // if (!authCode) {
+      //   const authenticationUrl = unsplashApi.auth.getAuthenticationUrl([
+      //     `public`,
+      //     `write_likes`,
+      //   ]);
 
-        window.location = authenticationUrl;
-      }
+      //   window.location = authenticationUrl;
+      // }
 
       const response = await unsplashApi.auth.userAuthentication(authCode);
       const authInfo = await toJson(response);
@@ -45,6 +45,7 @@ export const fetchAccessToken = createAsyncThunk(
 const auth = createSlice({
   name: `auth`,
   initialState: {
+    isAuth: false,
     token: null,
     status: null,
     error: null,
@@ -54,6 +55,7 @@ const auth = createSlice({
       unsplashApi.auth.setBearerToken(payload);
       localStorage.setItem(LOCAL_STORAGE_KEY, payload);
       state.token = payload;
+      state.isAuth = true;
     },
   },
   extraReducers: {
@@ -64,6 +66,7 @@ const auth = createSlice({
     [fetchAccessToken.fulfilled]: (state, { payload }) => {
       state.status = `resolved`;
       state.token = payload;
+      state.isAuth = true;
     },
     [fetchAccessToken.rejected]: setError,
   }
