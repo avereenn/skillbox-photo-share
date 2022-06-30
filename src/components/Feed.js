@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { incPagesNumber } from '../store/actions/feed.js';
 import { Preloader, Error } from './statusComponents.js';
-import Article from './article.js';
+import Article from './Article.js';
 import { ONSCROLL_LOAD_DELAY } from '../constants.js';
 
 export default function Feed({ articles, status, error }) {

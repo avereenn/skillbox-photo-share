@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchPhotos } from '../store/actions/feed.js';
 import Header from './Header.js';
 import Footer from './Footer.js';
-import Feed from './feed.js';
-import Article from './article.js';
-import NotFound from './notFound.js';
+import Feed from './Feed.js';
+import Article from './Article.js';
+import NotFound from './NotFound.js';
 import LoginPage from './LoginPage.js';
 
 export default function App() {

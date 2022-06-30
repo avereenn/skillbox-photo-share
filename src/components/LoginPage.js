@@ -5,6 +5,7 @@ import { setAccessToken, fetchAccessToken } from '../store/actions/auth.js';
 import { Preloader } from './statusComponents.js';
 import unsplashApi from '../unsplash.js';
 import { LOCAL_STORAGE_KEY } from '../constants.js';
+import { fetchUserProfile } from '../store/actions/user.js';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -22,6 +23,10 @@ export default function LoginPage() {
       dispatch(fetchAccessToken(authCode));
     }
   }, []);
+
+  useEffect(() => {
+    if(isAuth) dispatch(fetchUserProfile());
+  }, [isAuth]);
 
   function onAuthBtnClick() {
     const authenticationUrl = unsplashApi.auth.getAuthenticationUrl([

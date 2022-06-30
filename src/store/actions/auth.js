@@ -8,26 +8,6 @@ export const fetchAccessToken = createAsyncThunk(
   `feed/fetchAccessToken`,
   async function (authCode, { rejectWithValue }) {
     try {
-      // const localToken = localStorage.getItem(LOCAL_STORAGE_KEY);
-
-      // if (!/null|undefined|^\s*$/.test(localToken)) {
-      //   unsplashApi.auth.setBearerToken(localToken);
-      //   return localToken;
-      // }
-
-      // localStorage.removeItem(LOCAL_STORAGE_KEY);
-
-      // const authCode = window.location.search.split(`code=`)[1];
-
-      // if (!authCode) {
-      //   const authenticationUrl = unsplashApi.auth.getAuthenticationUrl([
-      //     `public`,
-      //     `write_likes`,
-      //   ]);
-
-      //   window.location = authenticationUrl;
-      // }
-
       const response = await unsplashApi.auth.userAuthentication(authCode);
       const authInfo = await toJson(response);
       const { access_token } = authInfo;
@@ -57,6 +37,12 @@ const auth = createSlice({
       state.token = payload;
       state.isAuth = true;
     },
+    removeAccessToken(state) {
+      unsplashApi.auth.setBearerToken(``);
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      state.token = null;
+      state.isAuth = false;
+    },
   },
   extraReducers: {
     [fetchAccessToken.pending]: (state) => {
@@ -73,4 +59,4 @@ const auth = createSlice({
 });
 
 export default auth;
-export const { setAccessToken } = auth.actions;
+export const { setAccessToken, removeAccessToken } = auth.actions;

@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleLike } from '../store/actions/feed.js';
-import Image from './image.js';
-import LikeButton from './likeBtn.js';
+import Image from './Image.js';
+import TooltipLikeButton from './TooltipLikeBtn.js';
 
 function BackLink() {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
           <time className="article__time" dateTime={dateStr}>{articleDateStr}</time>
           <a className="article__author" href={html}>{username}</a>
           <div className="article__like">
-          <LikeButton isAuth={isAuth} isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} />
+          <TooltipLikeButton isAuth={isAuth} isLiked={liked_by_user} onBtnClick={onToggleLikeBtnClick} />
             <span className="article__likes">
               {likes}
             </span>
