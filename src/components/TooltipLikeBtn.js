@@ -5,7 +5,7 @@ import Tippy from '@tippyjs/react';
 function Tooltip() {
   return (
     <div className="article__like-tooltip">
-      Чтобы оценивать фотографии авторизуйтесь
+      Чтобы оценивать фотографии, авторизуйтесь
     </div>
   );
 }

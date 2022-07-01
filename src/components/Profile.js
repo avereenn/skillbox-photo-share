@@ -8,13 +8,14 @@ export default function Profile() {
   const { userInfo } = useSelector(state => state.user);
   const username = userInfo?.username;
   const userImgSrc = userInfo?.profile_image?.small;
-  const dropdownRef = useRef();
+  const dropdownRef = useRef(null);
+  const profileButtonRef = useRef(null);
   const dispatch = useDispatch();
   const [isDropvisible, setDropVisible] = useState(false);
 
 
   function onHideDropdownWindowClick(ev) {
-    if(!dropdownRef.current || !dropdownRef.current.contains(ev.target)) return;
+    if(profileButtonRef.current.contains(ev.target) || dropdownRef.current.contains(ev.target)) return;
 
     setDropVisible(false);
   }
@@ -28,13 +29,16 @@ export default function Profile() {
   }
 
   useEffect(() => {
+    if(!dropdownRef.current) return;
+
     window.addEventListener(`click`, onHideDropdownWindowClick);
+
     return () => window.removeEventListener(`click`, onHideDropdownWindowClick);
   });
 
   return isAuth ? (
     <div className="header__profile profile">
-      <button className="profile__button" type="button" onClick={onToggleDropVisibleBtnClick}>
+      <button className="profile__button" type="button" onClick={onToggleDropVisibleBtnClick} ref={profileButtonRef}>
         <img className="profile__avatar-img" src={userImgSrc} alt="аватар пользователя" />
       </button>
       {username}
