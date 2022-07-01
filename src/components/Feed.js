@@ -3,38 +3,38 @@ import { useDispatch } from 'react-redux';
 import { incPagesNumber } from '../store/actions/feed.js';
 import { Preloader, Error } from './statusComponents.js';
 import Article from './Article.js';
-import { ONSCROLL_LOAD_DELAY } from '../constants.js';
 
 export default function Feed({ articles, status, error }) {
   const feedRef = useRef(null);
+  const lastArticleRef = useRef(null);
+  const observerLoader = useRef(null);
   const dispatch = useDispatch();
-  const articleItems = articles.map(article => {
+  const articleItems = articles.map((article, index) => {
+    if(index + 1 === articles.length) {
+      return (<li key={article.id} id={article.id} className="feed__item">
+      <Article articleInfo={article} ref={lastArticleRef} />
+    </li>);
+    }
+
     return (<li key={article.id} id={article.id} className="feed__item">
       <Article articleInfo={article} />
     </li>);
   });
 
-  let isDelay = false;
-
-  function onPushPhotosWindowScroll() {
-    if (isDelay) return;
-
-    const elemBottomPosition = Math.ceil(feedRef.current.getBoundingClientRect().bottom);
-    const windowHeight = document.documentElement.clientHeight;
-
-    if (elemBottomPosition <= windowHeight) {
-      isDelay = true;
-      setTimeout(() => isDelay = false, ONSCROLL_LOAD_DELAY);
-      dispatch(incPagesNumber());
-    }
+  function actionInSight(entries) {
+    if(entries[0].isIntersecting) dispatch(incPagesNumber());
   }
 
   useEffect(() => {
-    window.addEventListener(`scroll`, onPushPhotosWindowScroll);
-    return () => {
-      window.removeEventListener(`scroll`, onPushPhotosWindowScroll);
+    if (observerLoader.current) {
+      observerLoader.current.disconnect();
     }
-  }, []);
+
+    observerLoader.current = new IntersectionObserver(actionInSight);
+    if (lastArticleRef.current) {
+      observerLoader.current.observe(lastArticleRef.current);
+    }
+  }, [lastArticleRef]);
 
   return (
     <>

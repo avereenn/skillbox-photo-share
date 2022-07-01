@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleLike } from '../store/actions/feed.js';
@@ -16,7 +16,7 @@ function BackLink() {
   return <a href="#" onClick={onGoBackLinkClick}>НАЗАД</a>;
 }
 
-export default function Article({ articleInfo, isSinglePage = false }) {
+const Article = forwardRef(({ articleInfo, isSinglePage = false }, ref) =>  {
   const params = useParams();
   const articleId = params.articleId;
   const { feed: articles } = useSelector(state => state.feed);
@@ -46,7 +46,7 @@ export default function Article({ articleInfo, isSinglePage = false }) {
   return (
     <>
       {isSinglePage ? <BackLink /> : null}
-      <article className={`feed__article ${isSinglePage ? `feed__article_single` : ``} article`}>
+      <article className={`feed__article ${isSinglePage ? `feed__article_single` : ``} article`} ref={ref}>
         <h2 hidden>{description}</h2>
         <Image id={id} urls={urls} description={description} isLink={!isSinglePage} />
         <div className="article__info">
@@ -62,4 +62,6 @@ export default function Article({ articleInfo, isSinglePage = false }) {
       </article>
     </>
   );
-}
+});
+
+export default Article;
