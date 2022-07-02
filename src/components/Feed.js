@@ -35,7 +35,7 @@ export default function Feed({ articles, status, error }) {
     if (lastArticleRef.current) {
       observerLoader.current.observe(lastArticleRef.current);
     }
-  }, [lastArticleRef]);
+  }, [articles.length]);
 
   return (
     <>
