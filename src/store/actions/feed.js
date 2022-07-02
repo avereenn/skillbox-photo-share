@@ -8,7 +8,7 @@ export const fetchPhotos = createAsyncThunk(
   `feed/fetchPhotos`,
   async function (payload, { getState, rejectWithValue }) {
     try {
-      const { pagesNumber } = getState().feed;
+      const { feed, pagesNumber } = getState().feed;
       const response = await unsplashApi.photos.listPhotos(pagesNumber);
 
       if (!response.ok) {
@@ -17,7 +17,10 @@ export const fetchPhotos = createAsyncThunk(
 
       const photoList = await toJson(response);
 
-      return photoList;
+      // unsplash api иногда дублирует фото, поэтому фильтруем массив результатов
+      const result = photoList.filter(el => !feed.find(elem => elem.id === el.id));
+
+      return result;
     } catch (error) {
       rejectWithValue(error.message);
     }
@@ -53,9 +56,6 @@ const feed = createSlice({
     error: null,
   },
   reducers: {
-    initFeed(state, { payload }) {
-      return payload;
-    },
     incPagesNumber(state) {
       if(state.status !== `resolved`) return;
 
@@ -84,4 +84,4 @@ const feed = createSlice({
 });
 
 export default feed;
-export const { initFeed, addArticlesToFeed, toggleLikePhoto, incPagesNumber } = feed.actions;
+export const { toggleLikePhoto, incPagesNumber } = feed.actions;

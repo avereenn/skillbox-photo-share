@@ -9,10 +9,11 @@ export default function Feed({ articles, status, error }) {
   const lastArticleRef = useRef(null);
   const observerLoader = useRef(null);
   const dispatch = useDispatch();
-  const articleItems = articles.map((article, index) => {
-    if(index + 1 === articles.length) {
-      return (<li key={article.id} id={article.id} className="feed__item">
-      <Article articleInfo={article} ref={lastArticleRef} />
+  const articleItems = articles.map((article, index, arr) => {
+
+    if(index + 1 === arr.length) {
+      return (<li key={article.id} id={article.id} className="feed__item"  ref={lastArticleRef}>
+      <Article articleInfo={article} />
     </li>);
     }
 

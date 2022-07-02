@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleLike } from '../store/actions/feed.js';
 import Image from './Image.js';
 import TooltipLikeButton from './TooltipLikeBtn.js';
+import { INITIAL_IMG_TEXT } from '../constants.js';
 
 function BackLink() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const Article = forwardRef(({ articleInfo, isSinglePage = false }, ref) =>  {
     id,
     created_at: dateStr,
     description,
+    alt_description,
     likes,
     liked_by_user,
     user: { username },
@@ -47,8 +49,8 @@ const Article = forwardRef(({ articleInfo, isSinglePage = false }, ref) =>  {
     <>
       {isSinglePage ? <BackLink /> : null}
       <article className={`feed__article ${isSinglePage ? `feed__article_single` : ``} article`} ref={ref}>
-        <h2 hidden>{description}</h2>
-        <Image id={id} urls={urls} description={description} isLink={!isSinglePage} />
+        <h2 hidden>{description || INITIAL_IMG_TEXT}</h2>
+        <Image id={id} urls={urls} alt={alt_description || INITIAL_IMG_TEXT} isLink={!isSinglePage} />
         <div className="article__info">
           <time className="article__time" dateTime={dateStr}>{articleDateStr}</time>
           <a className="article__author" href={html}>{username}</a>
