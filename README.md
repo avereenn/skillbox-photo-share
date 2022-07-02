@@ -10,4 +10,5 @@
 5. react-router-dom v6
 6. unsplash-js
 7. @tippyjs/react
+
 Проект собирается webpack'ом.
